@@ -31,12 +31,29 @@ public:
 
     void start_server (uint16_t port);
 
-private:
+    void join_server_threads ()
+    {
+        for (auto& t: thread_pool_)
+        {
+            t.join ();
+        }
+    }
+
     void handle_new_connection (shared_handler_t handler,
         asio::error_code const& error)
     {
+        if (error) {return;};
 
+        handler->start ();
+
+        auto new_handler=std::make_shared<ConnectionHandler> (io_service_);
+
+        acceptor_.async_accept (new_handler->socket ()
+                           , [=] (auto ec){
+                    this->handle_new_connection (new_handler, ec);
+                });
     }
+private:
 
     int thread_count_;
     std::vector <std::thread> thread_pool_;
@@ -58,9 +75,14 @@ void asio_generic_server <ConnectionHandler>::start_server(uint16_t port)
     acceptor_.async_accept(handler->socket ()
                   , [=] (auto ec)
                            {
-                               handle_new_connection(handler, ec);
+                               this->handle_new_connection(handler, ec);
                            }
     );
+
+    for (int i=0; i<thread_count_; ++i)
+    {
+        thread_pool_.emplace_back ( [=] {io_service_.run ();});
+    }
 }
 
 
