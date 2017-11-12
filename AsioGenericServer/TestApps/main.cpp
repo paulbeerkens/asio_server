@@ -15,6 +15,7 @@ public:
              ,write_strand_ (service)
     {}
 
+
     asio::ip::tcp::socket& socket () {return socket_;}
 
     void start () {read_packet ();}
@@ -41,6 +42,9 @@ public:
 
         read_packet ();
     }
+
+    void send
+    continue from https://www.youtube.com/watch?v=rwOv_tw2eA4
 private:
     asio::io_service& service_;
     asio::ip::tcp::socket socket_;

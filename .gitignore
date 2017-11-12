@@ -1,0 +1,8 @@
+/build*/
+
+*.bak
+
+/cmake-build-*/
+.idea/
+
+.*.swp
