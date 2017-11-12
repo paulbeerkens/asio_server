@@ -44,7 +44,7 @@ public:
     }
 
     void send
-    continue from https://www.youtube.com/watch?v=rwOv_tw2eA4
+    continue from https://www.youtube.com/watch?v=rwOv_tw2eA4  around 47:38
 private:
     asio::io_service& service_;
     asio::ip::tcp::socket socket_;
